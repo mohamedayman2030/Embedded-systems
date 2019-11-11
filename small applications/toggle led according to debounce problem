@@ -1,0 +1,32 @@
+/*
+ * ex4.c
+
+ *
+ *  Created on: 11/11/2019
+ *        Author: mohamedayman
+ */
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+#define F_CPU 1000000
+void main(void){
+	/* initialize the led and switch */
+	DDRC|=(1<<0);
+	DDRB&=~(1<<0);
+	unsigned char flag=0;
+	while(1){
+		/* avoid debounce problem */
+		if(!(PINB&(1<<0))){
+			_delay_ms(30);
+			if(!(PINB&(1<<0))){
+				if(flag==0){
+				PORTC^=(1<<0);
+				flag=1;
+				}
+			}
+		}
+		else{
+			flag=0;
+		}
+	}
