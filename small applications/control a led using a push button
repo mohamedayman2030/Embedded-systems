@@ -5,10 +5,11 @@
  *  Created on: 11/11/2019
  *      Author: mohamed ayman
  */
+ 
 #include <avr/io.h>
 /*work with 1 MHZ frequency */
 #define F_CPU 1000000
-
+/* switch connected using pull down and the led connected using positive logic */
 int main(void){
 	/* initialize the push button as input */
 	DDRA &=~(1<<3);
