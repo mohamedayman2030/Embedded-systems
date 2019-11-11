@@ -1,0 +1,26 @@
+/*
+ * ch1.c
+
+ *
+ *  Created on: 11/11/2019
+ *      Author: mohamed ayman
+ */
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+#define F_CPU 1000000
+/*roll down 8 leds with delay half seconds */
+void main(void){
+	DDRC=0xFF;
+	PORTC=0x01;
+	while(1){
+		_delay_ms(500);
+
+		PORTC=PORTC<<1;
+
+		if(PORTC==0x00){
+			PORTC=0x01;
+		}
+	}
+}
