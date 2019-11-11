@@ -1,0 +1,26 @@
+/*
+ * ex2.c
+
+ *
+ *  Created on: 11/11/2019
+ *      Author: mohamed ayman
+ */
+
+#include <avr/io.h>
+#include <util/delay.h>
+/* work with 8 MHZ frequency */
+#define F_CPU 8000000
+
+void main(void){
+	/* the led connected using negative logic config. */
+	/* initialize the led as output */
+	DDRD|=(1<<6);
+	while(1){
+		/* turn on the led and delay for 1 sec */
+		PORTD&=~(1<<6);
+		_delay_ms(1000);
+		/* turn off the led and delay for 1 sec */
+		PORTD|=(1<<6);
+		_delay_ms(1000);
+	}
+}
