@@ -1,0 +1,46 @@
+/*
+ * ex5.c
+
+ *
+ *  Created on: 11/11/2019
+ *      Author: mohamed ayman
+ */
+#include <avr/io.h>
+#include <util/delay.h>
+
+void main(void){
+	/* initialize push button with pin4 in port D and initialize 7-segment with first 4 pins in port c
+	 */
+	DDRD&=~(1<<4);
+	DDRC|=(1<<0)|(1<<1)|(1<<2)|(1<<3);
+	unsigned char num=0;
+	unsigned char flag=0;
+	while(1){
+		/* solve debounce problem */
+		if(PIND&(1<<4)){
+			_delay_ms(30);
+			if(PIND&(1<<4)){
+				if(flag==0){
+					num++;
+
+					PORTC=(PORTC&0xF0)|(num&0x0F);
+
+					flag=1;
+					/* count untill 7-segment arrive to 9 and start from 0 again */
+if(num>9){
+						num=0;
+						PORTC=(PORTC&0xF0)|(num&0x0F);
+					}
+				}
+			}
+
+
+
+
+		}
+		else {
+			flag=0;
+		}
+	}
+
+}
