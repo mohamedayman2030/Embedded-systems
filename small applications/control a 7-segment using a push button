@@ -7,7 +7,7 @@
  */
 #include <avr/io.h>
 #include <util/delay.h>
-
+#define F_CPU 1000000
 void main(void){
 	/* initialize push button with pin4 in port D and initialize 7-segment with first 4 pins in port c
 	 */
