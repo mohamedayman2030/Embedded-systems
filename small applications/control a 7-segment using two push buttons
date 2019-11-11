@@ -1,0 +1,69 @@
+/*
+ * ch2.c
+
+ *
+ *  Created on: 11/11/2019
+ *      Author: mohamed ayman
+ */
+
+
+#include<avr/io.h>
+#include<util/delay.h>
+#define F_CPU 1000000
+void main(void){
+	/* initialize 2 push buttons with port a and initialize 7-segment using BCD with port D */
+	DDRA&=~(1<<0);
+	DDRA&=~(1<<1);
+	DDRD|=(1<<0)|(1<<1)|(1<<2)|(1<<3);
+	unsigned char flag=0;
+	unsigned char num=0;
+
+
+	while(1){
+		/* increase the 7-segment with first push button */
+	if(PINA&(1<<0)){
+		_delay_ms(30);
+		if(PINA&(1<<0)){
+			if(flag==0){
+				if((PORTD&0x0F)!=9){
+			num++;
+			PORTD=(PORTD&0xF0)|(num&0x0F);
+			flag=1;
+				}
+
+			}
+
+
+		}
+		else{
+			flag=0;
+
+		}
+
+
+
+	}
+	/* decrease 7-segment with second push button */
+	else if(PINA&(1<<1)){
+					_delay_ms(30);
+					if(PINA&(1<<1)){
+
+						if(flag==0){
+							if((PORTD&0x0F)!=0){
+						num--;
+						PORTD=(PORTD&0xF0)|(num&0x0F);
+						flag=1;
+
+						}
+						}
+
+
+
+					}
+					else{
+						flag=0;
+
+					}
+		}
+	}
+}
