@@ -1,0 +1,45 @@
+/*
+ * ex1.c
+
+ *
+ *  Created on: 13/11/2019
+ *      Author: mohamed ayman
+ */
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+#define F_CPU 1000000
+unsigned char flag=0;
+/* initialize interrupt 0 */
+void INT0_init(void){
+	/* enable global interrupt enable */
+	SREG|=(1<<7);
+	/* enable module interrupt enable */
+	GICR|=(1<<INT0);
+	/* working with rising edge */
+	MCUCR|=(1<<ISC00);
+	MCUCR|=(1<<ISC01);
+
+}
+ISR(INT0_vect){
+	flag=1;
+}
+
+
+
+void main(void){
+	/* let pin 0 id port 0 as output for led and let pin 2 in port d as input for the switch */
+	DDRC|=(1<<0);
+	DDRD&=~(1<<2);
+
+	INT0_init();
+	while(1){
+	if(flag==1){
+			PORTC^=(1<<0);
+			flag=0;
+		}
+	}
+
+}
