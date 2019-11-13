@@ -1,0 +1,54 @@
+/*
+ * ex2.c
+
+ *
+ *  Created on: 13/11/2019
+ *      Author: mohamed ayman
+ */
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+unsigned char flag=0;
+unsigned char i=0;
+/* initialize interrupt 1 */
+void INT1_init(void){
+	SREG|=(1<<7);
+	GICR|=(1<<INT1);
+	MCUCR|=(1<<ISC11);
+	MCUCR &=~(1<<ISC10);
+}
+ISR(INT1_vect){
+	flag=1;
+}
+
+void main(void){
+ /* initialize 8 leds with DDRC */
+	DDRC=0xFF;
+	PORTC=0x01;
+	/* initialize push button on DDRD with pin 3 */
+	DDRD&=~(1<<3);
+	INT1_init();
+	while(1){
+		/* roll down 8 leds */
+		if(flag==0){
+			_delay_ms(500);
+			PORTC=PORTC<<1;
+			if(PORTC==0x00){
+				PORTC=0x01;
+			}
+		}
+		/* flash all leds for 5 times */
+		else if(flag==1){
+			for(i=0;i<5;i++){
+				PORTC=0xFF;
+				_delay_ms(500);
+				PORTC=0x00;
+				_delay_ms(500);
+			}
+			flag=0;
+
+		}
+	}
+}
