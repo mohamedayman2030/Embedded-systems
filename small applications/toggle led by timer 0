@@ -1,0 +1,44 @@
+/*
+ * overflow.c
+
+ *
+ *  Created on: 14/11/2019
+ *      Author: mohamed ayman
+ */
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+unsigned char flag=0;
+unsigned char tick=0;
+
+
+void timer0of_init(void){
+	/* choose overflow mode - prescalar 1024
+	 * to toggle led every 0.5 sec we need to overflow two times
+	 */
+	TCCR0|=(1<<FOC0)|(1<<CS00)|(1<<CS02);
+	TCNT0=0;
+	TIMSK|=(1<<TOIE0);
+	SREG|=(1<<7);
+
+}
+ISR(TIMER0_OVF_vect){
+	flag=1;
+}
+void main(void){
+	DDRC|=(1<<0);
+	timer0of_init();
+	while(1){
+		if(flag==1){
+			tick++;
+			if(tick==2){
+				PORTC^=(1<<0);
+				tick=0;
+
+			}
+
+			flag=0;
+		}
+	}
+}
