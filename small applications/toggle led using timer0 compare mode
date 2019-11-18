@@ -1,0 +1,44 @@
+/*
+ * compare.c
+
+ *
+ *  Created on: 18/11/2019
+ *      Author: mohamed ayman
+ */
+#include <avr/io.h>
+#include <avr/interrupt.h>
+unsigned char tick=0;
+unsigned char flag=0;
+
+ISR(TIMER0_COMP_vect){
+	/* toggle led every 0.5 sec */
+	tick++;
+	if(tick==2){
+		flag=1;
+		tick=0;
+	}
+}
+
+void timer0_init(void){
+	/* enable timer 0 with compare mode
+	 * 1024 prescalar
+	 * 250 compare value
+	 *
+	 */
+	SREG|=(1<<7);
+	TCCR0|=(1<<FOC0)|(1<<WGM01)|(1<<CS00)|(1<<CS02);
+	TCNT0=0;
+	OCR0=250;
+	TIMSK|=(1<<OCIE0);
+}
+void main(void){
+	DDRC|=(1<<0);
+    timer0_init();
+    while(1){
+    	if(flag==1){
+    		PORTC^=(1<<0);
+    		flag=0;
+    	}
+
+    }
+}
