@@ -1,0 +1,29 @@
+/*
+ * ex3.c
+
+ *
+ *  Created on : 18/11/2019
+ *      Author: mohamed ayman
+ */
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+void timer0_init(void){
+	/* generate 2khz freq using timer 0 compare mode
+	 * no pre scalar
+	 * toggle every 250microsec
+	 *
+	 */
+	TCCR0|=(1<<WGM01)|(1<<FOC0)|(1<<COM00)|(1<<CS00);
+	TCNT0=0;
+	OCR0=250;
+	DDRB|=(1<<3);
+}
+
+void main(void){
+	timer0_init();
+	while(1){
+
+	}
+}
+
