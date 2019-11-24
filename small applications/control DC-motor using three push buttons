@@ -1,0 +1,39 @@
+/*
+ * dcmotor.c
+
+ *
+ *  Created on: 24/11/2019
+ *      Author: mohamed ayman
+ */
+#include <avr/io.h>
+#include <util/delay.h>
+
+void main(void){
+	/* initialize the 3 buttons */
+	DDRA&=~(1<<0);
+	DDRA&=~(1<<1);
+	DDRA&=~(1<<2);
+    /* initialize the 2 inputs for H bridge to control the dc motor */
+	DDRC|=(1<<0)|(1<<1);
+	while(1){
+		/* if switch 1 pressed the dc motor rotate with clockwise */
+	if(PINA&(1<<0)){
+	   PORTC|=(1<<0);
+	   PORTC&=~(1<<1);
+	}
+	/* if switch 2 pressed the dc motor rotate with Anti clockwise */
+
+	else if(PINA&(1<<1)){
+		   PORTC|=(1<<1);
+		   PORTC&=~(1<<0);
+		}
+	/* if switch 3 pressed stop the dc motor  */
+
+	else if(PINA&(1<<2)){
+		   PORTC&=~(1<<0);
+		   PORTC&=~(1<<1);
+		}
+	}
+
+}
+
